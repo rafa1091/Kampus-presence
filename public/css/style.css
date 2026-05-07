@@ -1,0 +1,74 @@
+.grid-dashboard{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+}
+
+.card{
+    border:1px solid #ddd;
+    padding:20px;
+    background:#fff;
+}
+
+.status-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-top:20px;
+}
+
+.status-box{
+    border:1px solid #ddd;
+    padding:15px;
+    text-align:center;
+    cursor:pointer;
+}
+
+.status-box.active{
+    background:#000;
+    color:#fff;
+}
+
+.btn-black{
+    background:#000;
+    color:#fff;
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+}
+
+.grid-form{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+}
+
+.grid-jadwal{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-top:20px;
+}
+
+.card-jadwal{
+    border:1px solid #ddd;
+    padding:15px;
+}
+
+.card-bimbingan{
+    display:grid;
+    grid-template-columns:100px 1fr 100px;
+    border:1px solid #ddd;
+    padding:15px;
+    margin-bottom:10px;
+}
+
+.badge{
+    padding:5px 10px;
+    font-size:12px;
+}
+
+.approved{
+    background:#e6f7e6;
+    color:green;
+}

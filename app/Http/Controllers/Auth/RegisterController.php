@@ -18,25 +18,30 @@ class RegisteredUserController extends Controller
         return view('auth.register');
     }
 
-    public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name'     => ['required', 'string', 'max:255'],
-            'nim'      => ['nullable', 'string', 'max:50', 'unique:users,nim'],
-            'email'    => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+    public function register(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users',
+        'password' => 'required|min:8',
+        'role' => 'required|in:mahasiswa,dosen',
+        'id_number' => 'required',
+        'no_hp' => 'nullable',
+    ]);
 
-        $user = User::create([
-            'name'     => $request->name,
-            'nim'      => $request->nim,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'role' => $request->role,
+        'id_number' => $request->id_number,
+        'no_hp' => $request->no_hp,
+    ]);
 
-        event(new Registered($user));
-        Auth::login($user);
+    Auth::login($user);
 
-        return redirect(route('mahasiswa.dashboard', absolute: false));
-    }
+    return $user->role == 'dosen'
+        ? redirect()->route('dosen.dashboard')
+        : redirect()->route('mahasiswa.dashboard');
+}
 }
