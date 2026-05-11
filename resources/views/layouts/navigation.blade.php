@@ -1,7 +1,9 @@
 <nav class="sticky top-0 z-50 flex items-center justify-between px-12 h-[60px] bg-white border-b border-gray-200">
     <div class="flex items-center gap-10">
+
         {{-- Logo --}}
-        <a href="{{ route('mahasiswa.dashboard') }}" class="flex items-center gap-2.5">
+        <a href="{{ Auth::user()->role === 'dosen' ? route('dosen.dashboard') : route('mahasiswa.dashboard') }}"
+           class="flex items-center gap-2.5">
             <svg class="w-7 h-7" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="28" height="28" fill="#0a0a0a"/>
                 <path d="M14 7L22 11L14 15L6 11L14 7Z" fill="white"/>
@@ -15,18 +17,34 @@
 
         {{-- Nav Links --}}
         <div class="flex">
-            <a href="{{ route('mahasiswa.dashboard') }}"
-               class="flex items-center gap-1.5 px-3 py-1 text-[11px] font-bold uppercase tracking-wide border-b-2
-                      {{ request()->routeIs('mahasiswa.dashboard') ? 'border-black text-black' : 'border-transparent text-gray-400 hover:text-black' }}
-                      transition-colors">
-                ⊞ Dashboard
-            </a>
-            <a href="{{ route('mahasiswa.bimbingan') }}"
-               class="flex items-center gap-1.5 px-3 py-1 text-[11px] font-bold uppercase tracking-wide border-b-2
-                      {{ request()->routeIs('mahasiswa.bimbingan') ? 'border-black text-black' : 'border-transparent text-gray-400 hover:text-black' }}
-                      transition-colors">
-                ☰ Bimbingan
-            </a>
+            @if(Auth::user()->role === 'dosen')
+                <a href="{{ route('dosen.dashboard') }}"
+                   class="flex items-center gap-1.5 px-3 py-1 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors
+                          {{ request()->routeIs('dosen.dashboard') ? 'border-black text-black' : 'border-transparent text-gray-400 hover:text-black' }}">
+                    ⊞ Dashboard
+                </a>
+                <a href="{{ route('dosen.bimbingan') }}"
+                   class="flex items-center gap-1.5 px-3 py-1 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors
+                          {{ request()->routeIs('dosen.bimbingan') ? 'border-black text-black' : 'border-transparent text-gray-400 hover:text-black' }}">
+                    ☰ Bimbingan
+                </a>
+                <a href="{{ route('dosen.jadwal') }}"
+                   class="flex items-center gap-1.5 px-3 py-1 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors
+                          {{ request()->routeIs('dosen.jadwal') ? 'border-black text-black' : 'border-transparent text-gray-400 hover:text-black' }}">
+                    🗓️ Jadwal Saya
+                </a>
+            @else
+                <a href="{{ route('mahasiswa.dashboard') }}"
+                   class="flex items-center gap-1.5 px-3 py-1 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors
+                          {{ request()->routeIs('mahasiswa.dashboard') ? 'border-black text-black' : 'border-transparent text-gray-400 hover:text-black' }}">
+                    ⊞ Dashboard
+                </a>
+                <a href="{{ route('mahasiswa.bimbingan') }}"
+                   class="flex items-center gap-1.5 px-3 py-1 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors
+                          {{ request()->routeIs('mahasiswa.bimbingan') ? 'border-black text-black' : 'border-transparent text-gray-400 hover:text-black' }}">
+                    ☰ Bimbingan
+                </a>
+            @endif
         </div>
     </div>
 
@@ -34,7 +52,7 @@
     <div class="flex items-center gap-3">
         <div class="text-right">
             <p class="text-[9px] font-bold uppercase tracking-widest text-gray-400 leading-none">
-                {{ Auth::user()->role ?? 'Mahasiswa' }}
+                {{ Auth::user()->role === 'dosen' ? 'DOSEN' : 'MAHASISWA' }}
             </p>
             <p class="text-[13px] font-bold mt-0.5">
                 {{ Auth::user()->name ?? 'Guest' }}

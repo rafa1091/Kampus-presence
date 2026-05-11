@@ -5,7 +5,23 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\BimbinganController;
 use App\Http\Controllers\DosenController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
+// ── PUBLIC ──
+Route::get('/', function () {
+    if (Auth::check()) {
+        $role = Auth::user()->role;
+
+        if ($role === 'dosen') {
+            return redirect()->route('dosen.dashboard');
+        }
+
+        return redirect()->route('mahasiswa.dashboard');
+    }
+
+    return redirect()->route('login');
+});
 
 // ── AUTH (guest only) ──
 Route::middleware('guest')->group(function () {
@@ -16,30 +32,21 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
 });
 
-// ── PUBLIC ──
-Route::get('/', function () {
-    return redirect()->intended('/');
-});
-
 // ── AUTH (LOGIN REQUIRED) ──
 Route::middleware(['auth'])->group(function () {
 
-    // 🔵 DOSEN ROUTES
+    // DOSEN ROUTES
     Route::prefix('dosen')->group(function () {
-        Route::get('/dashboard', [DosenController::class, 'dashboard'])
-            ->name('dosen.dashboard');
-
-        Route::get('/jadwal', [DosenController::class, 'jadwal'])
-            ->name('dosen.jadwal');
-
-        Route::get('/bimbingan', [DosenController::class, 'bimbingan'])
-            ->name('dosen.bimbingan');
+        Route::get('/dashboard', [DosenController::class, 'dashboard'])->name('dosen.dashboard');
+        Route::get('/jadwal', [DosenController::class, 'jadwal'])->name('dosen.jadwal');
+        Route::get('/bimbingan', [DosenController::class, 'bimbingan'])->name('dosen.bimbingan');
+        Route::put('/status', [DosenController::class, 'updateStatus'])->name('dosen.status.update');
+        Route::put('/profil', [DosenController::class, 'updateProfil'])->name('dosen.profil.update');
     });
 
-    // 🟢 MAHASISWA ROUTES
+    // MAHASISWA ROUTES
     Route::prefix('mahasiswa')->group(function () {
-        Route::get('/dashboard', [MahasiswaController::class, 'dashboard'])
-            ->name('mahasiswa.dashboard');
+        Route::get('/dashboard', [MahasiswaController::class, 'dashboard'])->name('mahasiswa.dashboard');
 
         Route::resource('/bimbingan', BimbinganController::class)
             ->names([
@@ -53,20 +60,21 @@ Route::middleware(['auth'])->group(function () {
             ]);
     });
 
-    // 🔐 LOGOUT
-    Route::post('/logout', [AuthController::class, 'logout'])
-        ->name('logout');
+    // LOGOUT
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // 👤 PROFILE
-    Route::get('/profile', [ProfileController::class, 'edit'])
-        ->name('profile.edit');
+    Route::prefix('dosen')->name('dosen.')->group(function () {
 
-    Route::patch('/profile', [ProfileController::class, 'update'])
-        ->name('profile.update');
-
-    Route::delete('/profile', [ProfileController::class, 'destroy'])
-        ->name('profile.destroy');
+        Route::get('/dashboard', [DosenController::class, 'dashboard'])->name('dashboard');
+        Route::get('/jadwal', [DosenController::class, 'jadwal'])->name('jadwal');
+        Route::post('/jadwal', [DosenController::class, 'storeJadwal'])->name('jadwal.store');
+        Route::delete('/jadwal/{id}', [DosenController::class, 'destroyJadwal'])->name('jadwal.destroy');
+    
+        Route::get('/bimbingan', [DosenController::class, 'bimbingan'])->name('bimbingan');
+    
+        Route::put('/status', [DosenController::class, 'updateStatus'])->name('status.update');
+        Route::put('/profil', [DosenController::class, 'updateProfil'])->name('profil.update');
+    });
 });
 
-// Breeze auth (biarkan saja)
 require __DIR__.'/auth.php';
