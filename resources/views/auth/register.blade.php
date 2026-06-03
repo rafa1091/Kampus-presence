@@ -110,6 +110,11 @@
         #dosen-only {
             display: none;
         }
+
+        .login-line { font-size: 13.5px; color: var(--gray-600); font-weight: 300; margin-bottom: 40px; }
+        .login-line a { color: var(--black); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+        .login-line a:hover { opacity: 0.7; }
+        .divider { height: 1px; background: var(--gray-200); margin-bottom: 28px; }
     </style>
 </head>
 
@@ -180,6 +185,11 @@
 
                 <button type="submit" class="btn">DAFTAR</button>
             </div>
+        
+        <div class="divider"></div>
+            <p class="login-line">
+                Sudah punya akun? <a href="{{ route('login') }}">Login sekarang</a>
+            </p>
 
         </form>
 

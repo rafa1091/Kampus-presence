@@ -21,17 +21,17 @@
                 <a href="{{ route('dosen.dashboard') }}"
                    class="flex items-center gap-1.5 px-3 py-1 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors
                           {{ request()->routeIs('dosen.dashboard') ? 'border-black text-black' : 'border-transparent text-gray-400 hover:text-black' }}">
-                    ⊞ Dashboard
+                    Dashboard
                 </a>
                 <a href="{{ route('dosen.bimbingan') }}"
                    class="flex items-center gap-1.5 px-3 py-1 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors
                           {{ request()->routeIs('dosen.bimbingan') ? 'border-black text-black' : 'border-transparent text-gray-400 hover:text-black' }}">
-                    ☰ Bimbingan
+                    Bimbingan
                 </a>
                 <a href="{{ route('dosen.jadwal') }}"
                    class="flex items-center gap-1.5 px-3 py-1 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors
                           {{ request()->routeIs('dosen.jadwal') ? 'border-black text-black' : 'border-transparent text-gray-400 hover:text-black' }}">
-                    🗓️ Jadwal Saya
+                    Jadwal Saya
                 </a>
             @else
                 <a href="{{ route('mahasiswa.dashboard') }}"

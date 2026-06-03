@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
 
 class RegisteredUserController extends Controller
 {
@@ -28,26 +29,38 @@ class RegisteredUserController extends Controller
      *
      * @throws ValidationException
      */
-    public function store(Request $request): RedirectResponse
+public function store(Request $request)
 {
     $request->validate([
         'name'      => ['required', 'string', 'max:255'],
-        'email'     => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+        'email'     => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
         'password'  => ['required', Rules\Password::defaults()],
         'role'      => ['required', 'string'],
         'id_number' => ['required', 'string'],
     ]);
 
-    User::create([
-        'name'     => $request->name,
-        'email'    => $request->email,
-        'password' => Hash::make($request->password),
-        'nip'      => $request->id_number, // ✅ ubah nim → nip
-        'no_hp'    => $request->no_hp,
-        'role'     => $request->role,
-    ]);
+   // Ganti no_hp menjadi phone sesuai kolom nomor 9 database kamu!
+DB::statement("
+    INSERT INTO users (name, email, password, nim, phone, role, created_at, updated_at) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+", [
+    $request->name,
+    $request->email,
+    Hash::make($request->password),
+    $request->id_number,
+    $request->no_hp ?? '-', // Ambil dari input form, tapi simpan ke kolom 'phone'
+    $request->role,
+    now(),
+    now()
+]);
 
-    // Tidak auto-login, langsung ke halaman login
-    return redirect()->route('login')->with('success', 'Akun berhasil dibuat! Silakan login.');
+    // 1. Ambil data user yang baru saja masuk ke database berdasarkan email-nya
+    $user = User::where('email', $request->email)->first();
+
+    // 2. Perintahkan Laravel untuk otomatis me-login-kan user tersebut
+    Auth::login($user);
+
+    // 3. Dilempar ke '/' agar dicek oleh logika role di web.php (Dosen ke dosen, Mhs ke mhs)
+    return redirect('/');
 }
 }
