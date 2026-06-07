@@ -31,28 +31,23 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
 {
     $request->validate([
-        'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-        'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        'role' => ['required', 'string'],
+        'name'      => ['required', 'string', 'max:255'],
+        'email'     => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+        'password'  => ['required', Rules\Password::defaults()],
+        'role'      => ['required', 'string'],
         'id_number' => ['required', 'string'],
     ]);
 
-    $user = User::create([
-        'name' => $request->name,
-        'email' => $request->email,
+    User::create([
+        'name'     => $request->name,
+        'email'    => $request->email,
         'password' => Hash::make($request->password),
-        'nim' => $request->id_number, // Gunakan satu kolom nim untuk menyimpan NIM/NIDN
-        'no_hp' => $request->no_hp,
-        'role' => $request->role,
+        'nip'      => $request->id_number, // ✅ ubah nim → nip
+        'no_hp'    => $request->no_hp,
+        'role'     => $request->role,
     ]);
 
-    // ... sisa kode login otomatis ...
-        
-        event(new Registered($user));
-        
-        Auth::login($user);
-
-        return redirect(route('mahasiswa.dashboard', absolute: false));
-    }
+    // Tidak auto-login, langsung ke halaman login
+    return redirect()->route('login')->with('success', 'Akun berhasil dibuat! Silakan login.');
+}
 }
