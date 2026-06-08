@@ -275,6 +275,7 @@
     </div>
 
     <a href="{{ url('/') }}" class="brand">
+<<<<<<< HEAD
         <svg class="logo-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
     
             <!-- Background Circle -->
@@ -304,6 +305,27 @@
         <div class="brand-text">
             <span class="brand-name">KampusPresence</span>
             <span class="brand-tagline">Smart Attendance System</span>
+=======
+        <!-- Logo gedung stilasi -->
+        <svg class="logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Bangunan utama -->
+            <rect x="5" y="16" width="30" height="22" fill="none" stroke="white" stroke-width="1.4"/>
+            <!-- Atap -->
+            <path d="M2 16 L20 4 L38 16" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Pintu -->
+            <rect x="15.5" y="25" width="9" height="13" fill="none" stroke="#e8c97a" stroke-width="1.2"/>
+            <!-- Jendela kiri -->
+            <rect x="7" y="19" width="7" height="5" fill="rgba(232,201,122,0.2)" stroke="#e8c97a" stroke-width="1"/>
+            <!-- Jendela kanan -->
+            <rect x="26" y="19" width="7" height="5" fill="rgba(232,201,122,0.2)" stroke="#e8c97a" stroke-width="1"/>
+            <!-- Tiang puncak -->
+            <line x1="20" y1="4" x2="20" y2="1" stroke="#e8c97a" stroke-width="1.2" stroke-linecap="round"/>
+            <circle cx="20" cy="1" r="1.2" fill="#e8c97a"/>
+        </svg>
+        <div class="brand-text">
+            <span class="brand-name-top">K A M P U S</span>
+            <span class="brand-name-bottom">/ P R E S E N C E</span>
+>>>>>>> 95bf4bc52e36fc6bb8a48813aaad040541dd6572
         </div>
     </a>
 

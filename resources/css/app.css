@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+<<<<<<< HEAD
 /* Custom CSS */
 .brand{
     position:absolute;
@@ -41,4 +42,15 @@
     letter-spacing:.18em;
     text-transform:uppercase;
     margin-top:2px;
+=======
+@layer components {
+    /* Tombol Standar Kampus */
+    .btn-kampus {
+        @apply h-10 px-6 bg-black text-white text-[10px] font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors flex items-center justify-center;
+    }
+    /* Tombol Outline (kalau mau variasi) */
+    .btn-outline {
+        @apply h-10 px-6 border border-black text-black text-[10px] font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors flex items-center justify-center;
+    }
+>>>>>>> 95bf4bc52e36fc6bb8a48813aaad040541dd6572
 }

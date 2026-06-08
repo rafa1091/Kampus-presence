@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <style>
     .kp-nav {
         background: #1E2A4A;
@@ -33,6 +34,55 @@
             <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                 <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
             </svg>
+=======
+<nav class="sticky top-0 z-50 flex items-center justify-between px-12 h-[60px] bg-white border-b border-gray-200">
+    <div class="flex items-center gap-10">
+
+        {{-- Logo --}}
+        <a href="{{ Auth::user()->role === 'dosen' ? route('dosen.dashboard') : route('mahasiswa.dashboard') }}"
+           class="flex items-center gap-2.5">
+            <svg class="w-7 h-7" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="28" height="28" fill="#0a0a0a"/>
+                <path d="M14 7L22 11L14 15L6 11L14 7Z" fill="white"/>
+                <path d="M10 13V18C10 18 11.5 20 14 20C16.5 20 18 18 18 18V13" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="22" y1="11" x2="22" y2="17" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span class="text-[15px] font-extrabold tracking-tight">
+                KAMPUS<span class="text-gray-400 font-medium">/presence</span>
+            </span>
+        </a>
+
+        {{-- Nav Links --}}
+        <div class="flex">
+            @if(Auth::user()->role === 'dosen')
+                <a href="{{ route('dosen.dashboard') }}"
+                   class="flex items-center gap-1.5 px-3 py-1 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors
+                          {{ request()->routeIs('dosen.dashboard') ? 'border-black text-black' : 'border-transparent text-gray-400 hover:text-black' }}">
+                    Dashboard
+                </a>
+                <a href="{{ route('dosen.bimbingan') }}"
+                   class="flex items-center gap-1.5 px-3 py-1 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors
+                          {{ request()->routeIs('dosen.bimbingan') ? 'border-black text-black' : 'border-transparent text-gray-400 hover:text-black' }}">
+                    Bimbingan
+                </a>
+                <a href="{{ route('dosen.jadwal') }}"
+                   class="flex items-center gap-1.5 px-3 py-1 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors
+                          {{ request()->routeIs('dosen.jadwal') ? 'border-black text-black' : 'border-transparent text-gray-400 hover:text-black' }}">
+                    Jadwal Saya
+                </a>
+            @else
+                <a href="{{ route('mahasiswa.dashboard') }}"
+                   class="flex items-center gap-1.5 px-3 py-1 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors
+                          {{ request()->routeIs('mahasiswa.dashboard') ? 'border-black text-black' : 'border-transparent text-gray-400 hover:text-black' }}">
+                    ⊞ Dashboard
+                </a>
+                <a href="{{ route('mahasiswa.bimbingan') }}"
+                   class="flex items-center gap-1.5 px-3 py-1 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors
+                          {{ request()->routeIs('mahasiswa.bimbingan') ? 'border-black text-black' : 'border-transparent text-gray-400 hover:text-black' }}">
+                    ☰ Bimbingan
+                </a>
+            @endif
+>>>>>>> 95bf4bc52e36fc6bb8a48813aaad040541dd6572
         </div>
         <span class="kp-logo-text">KAMPUS<span>/presence</span></span>
     </a>
@@ -79,11 +129,23 @@
         @endif
     </div>
 
+<<<<<<< HEAD
     {{-- User + Logout --}}
     <div class="kp-user">
         <div class="kp-user-info">
             <div class="kp-user-label">{{ Auth::user()->role === 'dosen' ? 'Dosen' : 'Mahasiswa' }}</div>
             <div class="kp-user-name">{{ Auth::user()->name ?? 'Guest' }}</div>
+=======
+    {{-- User Info + Logout --}}
+    <div class="flex items-center gap-3">
+        <div class="text-right">
+            <p class="text-[9px] font-bold uppercase tracking-widest text-gray-400 leading-none">
+                {{ Auth::user()->role === 'dosen' ? 'DOSEN' : 'MAHASISWA' }}
+            </p>
+            <p class="text-[13px] font-bold mt-0.5">
+                {{ Auth::user()->name ?? 'Guest' }}
+            </p>
+>>>>>>> 95bf4bc52e36fc6bb8a48813aaad040541dd6572
         </div>
         <div class="kp-avatar-sm">{{ strtoupper(substr(Auth::user()->name ?? 'U', 0, 2)) }}</div>
         <form method="POST" action="{{ route('logout') }}">
