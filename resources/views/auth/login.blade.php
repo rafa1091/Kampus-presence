@@ -58,11 +58,7 @@
         .ls-brand { display: flex; align-items: center; gap: 16px; }
 
         /* Building icon stilasi untuk loading */
-        .ls-icon {
-            width: 48px; height: 48px;
-            position: relative; flex-shrink: 0;
-        }
-        .ls-icon svg { width: 100%; height: 100%; }
+      
 
         .ls-text { display: flex; flex-direction: column; gap: 3px; }
         .ls-name {
@@ -141,22 +137,23 @@
 
         .brand-text { display: flex; flex-direction: column; gap: 4px; }
         .brand-name-top {
-            font-family: 'DM Mono', monospace;
-            font-size: 14px; font-weight: 500;
-            letter-spacing: 0.32em;
-            color: #ffffff;
-            line-height: 1;
-            text-transform: uppercase;
-        }
-        .brand-name-bottom {
-            font-family: 'DM Mono', monospace;
-            font-size: 9.5px; font-weight: 300;
-            letter-spacing: 0.42em;
-            background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 60%, var(--gold) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1;
-        }
+    font-family: 'DM Mono', monospace;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 0.2em;
+    color: #ffffff;
+    line-height: 1;
+    text-transform: uppercase;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+}
+.brand-name-bottom {
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px; font-weight: 400;
+    letter-spacing: 0em;
+    color: #e8c97a;
+    line-height: 1;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+}
+        
 
         .panel-left-content { position: absolute; bottom: 52px; left: 40px; right: 40px; color: var(--white); animation: fadeUp 1s 0.3s ease both; }
         .tag-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
@@ -204,9 +201,9 @@
         .toggle-pw { position:absolute; right:14px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--gray-400); padding:4px; display:flex; align-items:center; transition:color 0.2s; }
         .toggle-pw:hover { color:var(--gold); }
 
-        .btn-submit { width:100%; padding:16px; background:var(--black); color:var(--white); font-family:'DM Mono',monospace; font-size:12.5px; letter-spacing:0.22em; text-transform:uppercase; border:none; cursor:pointer; position:relative; overflow:hidden; transition:background 0.25s ease,transform 0.15s ease; margin-bottom:24px; }
+        .btn-submit { width:100%; padding:16px; background:#032685; color:var(--white); font-family:'DM Mono',monospace; font-size:12.5px; letter-spacing:0.22em; text-transform:uppercase; border:none; cursor:pointer; position:relative; overflow:hidden; transition:background 0.25s ease,transform 0.15s ease; margin-bottom:24px; }
         .btn-submit::before { content:''; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(201,168,76,0.2),transparent); transform:translateX(-100%); transition:transform 0.6s ease; }
-        .btn-submit:hover { background:#1a1a1a; }
+        .btn-submit:hover { background:#2351c8; }
         .btn-submit:hover::before { transform:translateX(100%); }
         .btn-submit:active { transform:scale(0.99); }
 
@@ -275,8 +272,16 @@
     </div>
 
     <a href="{{ url('/') }}" class="brand">
-        <svg class="logo-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    
+        <svg class="logo-svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="18" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+            <path d="M20 8 L32 12.5 L32 19.5 Q32 27 20 31 Q8 27 8 19.5 L8 12.5 Z" fill="none" stroke="white" stroke-width="1.6"/>
+            <circle cx="20" cy="17" r="4" fill="none" stroke="#e8c97a" stroke-width="1.6"/>
+            <path d="M12 28 Q12 23 20 23 Q28 23 28 28" fill="none" stroke="#e8c97a" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <div class="brand-text">
+            <span style="color:#fff; font-size:15px; font-weight:700; letter-spacing:0.3px; font-family:'DM Sans',sans-serif;">KAMPUS<span style="color:#a4b2cf; font-weight:400;">/presence</span></span>
+        </div>
+    </a>
             <!-- Background Circle -->
             <circle cx="24" cy="24" r="21"
                     fill="rgba(255,255,255,0.08)"
@@ -299,13 +304,6 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"/>
     
-        </svg>
-    
-        <div class="brand-text">
-            <span class="brand-name">KampusPresence</span>
-            <span class="brand-tagline">Smart Attendance System</span>
-        </div>
-    </a>
 
     <div class="panel-left-content">
         <p class="tag-label">Sistem Kehadiran Dosen</p>

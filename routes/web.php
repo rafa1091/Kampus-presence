@@ -52,6 +52,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/bimbingan',        [DosenController::class, 'bimbingan'])->name('bimbingan');
         Route::put('/status',           [DosenController::class, 'updateStatus'])->name('status.update');
         Route::put('/profil',           [DosenController::class, 'updateProfil'])->name('profil.update');
+        Route::post('/bimbingan/{id}/approve',[DosenController::class, 'approve'])->name('bimbingan.approve');
+        Route::post('/bimbingan/{id}/reject',[DosenController::class, 'reject'])->name('bimbingan.reject');
     });
 
     // ── MAHASISWA ──
