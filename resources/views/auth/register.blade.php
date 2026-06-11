@@ -58,6 +58,9 @@
         .ls-brand { display: flex; align-items: center; gap: 16px; }
 
         /* Building icon stilasi untuk loading */
+      
+
+        /* Building icon stilasi untuk loading */
         .ls-icon {
             width: 48px; height: 48px;
             position: relative; flex-shrink: 0;
@@ -312,88 +315,149 @@
 
 <!-- RIGHT -->
 <div class="panel-right">
-    <div class="card">
+    <div class="login-card">
+        <div class="card-inner">
 
-        <h2 class="title">Daftar Akun</h2>
+            <p class="section-label">Registrasi</p>
 
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
+            <h2 class="login-title">
+                Buat akun baru
+            </h2>
 
-            <!-- ROLE -->
-            <div class="form-group">
-                <label>Role</label>
-                <select name="role" id="role" onchange="toggleForm()" required>
-                    <option value="">Pilih...</option>
-                    <option value="mahasiswa">Mahasiswa</option>
-                    <option value="dosen">Dosen</option>
-                </select>
-            </div>
-
-            <div id="dynamic-fields" style="display:none;">
-
-                <!-- NAME -->
-                <div class="form-group">
-                    <label>Nama Lengkap</label>
-                    <input type="text" name="name" required>
-                </div>
-
-                <!-- ID -->
-                <div class="form-group">
-                    <label id="id-label">NIM / NIDN</label>
-                    <input type="text" name="id_number" required>
-                </div>
-
-                <!-- DOSEN ONLY -->
-                <div id="dosen-only">
-                    <div class="form-group">
-                        <label>No HP</label>
-                        <input type="text" name="no_hp">
-                    </div>
-                </div>
-
-                <!-- EMAIL -->
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" name="email" required>
-                </div>
-
-                <!-- PASSWORD -->
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" name="password" required>
-                </div>
-
-                <button type="submit" class="btn">DAFTAR</button>
-            </div>
-        
-        <div class="divider"></div>
-            <p class="login-line">
-                Sudah punya akun? <a href="{{ route('login') }}">Login sekarang</a>
+            <p class="login-subtitle">
+                Lengkapi data untuk mengakses KAMPUS/presence.
             </p>
 
-        </form>
+            @if ($errors->any())
+                <div class="alert-error">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
+            <form method="POST" action="{{ route('register') }}">
+                @csrf
+
+                <!-- ROLE -->
+                <div class="form-group">
+                    <label class="form-label">Role</label>
+                    <select name="role"
+                            id="role"
+                            class="form-control"
+                            onchange="toggleForm()"
+                            required>
+                        <option value="">Pilih Role</option>
+                        <option value="mahasiswa">Mahasiswa</option>
+                        <option value="dosen">Dosen</option>
+                    </select>
+                </div>
+
+                <div id="dynamic-fields" style="display:none;">
+
+                    <!-- NAMA -->
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap</label>
+                        <input type="text"
+                               name="name"
+                               class="form-control"
+                               placeholder="Masukkan nama lengkap"
+                               required>
+                    </div>
+
+                    <!-- NIM/NIDN -->
+                    <div class="form-group">
+                        <label class="form-label" id="id-label">NIM</label>
+                        <input type="text"
+                               name="id_number"
+                               class="form-control"
+                               placeholder="Masukkan NIM"
+                               required>
+                    </div>
+
+                    <!-- DOSEN ONLY -->
+                    <div id="dosen-only" style="display:none;">
+
+                        <div class="form-group">
+                            <label class="form-label">No HP</label>
+                            <input type="text"
+                                   name="no_hp"
+                                   class="form-control"
+                                   placeholder="08xxxxxxxxxx">
+                        </div>
+
+                    </div>
+
+                    <!-- EMAIL -->
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email"
+                               name="email"
+                               class="form-control"
+                               placeholder="nama@email.com"
+                               required>
+                    </div>
+
+                    <!-- PASSWORD -->
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+
+                        <div class="password-wrapper">
+                            <input type="password"
+                                   id="password"
+                                   name="password"
+                                   class="form-control"
+                                   placeholder="••••••••"
+                                   required>
+
+                            <button type="button"
+                                    class="toggle-pw"
+                                    onclick="togglePassword('password')">
+
+                                👁
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- KONFIRMASI PASSWORD -->
+                    <div class="form-group">
+                        <label class="form-label">Konfirmasi Password</label>
+
+                        <div class="password-wrapper">
+                            <input type="password"
+                                   id="password_confirmation"
+                                   name="password_confirmation"
+                                   class="form-control"
+                                   placeholder="••••••••"
+                                   required>
+
+                            <button type="button"
+                                    class="toggle-pw"
+                                    onclick="togglePassword('password_confirmation')">
+
+                                👁
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        Daftar
+                    </button>
+
+                </div>
+            </form>
+
+            <div class="divider"></div>
+
+            <p class="login-line">
+                Sudah punya akun?
+                <a href="{{ route('login') }}">
+                    Login sekarang
+                </a>
+            </p>
+
+        </div>
     </div>
 </div>
-
-<script>
-function toggleForm() {
-    let role = document.getElementById('role').value;
-    let fields = document.getElementById('dynamic-fields');
-    let dosen = document.getElementById('dosen-only');
-    let label = document.getElementById('id-label');
-
-    fields.style.display = role ? 'block' : 'none';
-
-    if (role === 'dosen') {
-        dosen.style.display = 'block';
-        label.innerText = "NIDN";
-    } else {
-        dosen.style.display = 'none';
-        label.innerText = "NIM";
-    }
-}
-</script>
-
-</body>
-</html>

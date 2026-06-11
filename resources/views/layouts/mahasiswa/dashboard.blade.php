@@ -455,6 +455,7 @@ function showToast(msg) {
     t.style.display = 'flex';
     setTimeout(() => t.style.display = 'none', 3000);
 }
+let chatHistory = [];
 
 function toggleChat() {
     const w = document.getElementById('chatWindow');
@@ -466,21 +467,43 @@ function toggleChat() {
 async function sendChat() {
     const input = document.getElementById('chatInput');
     const msg   = input.value.trim();
+    chatHistory.push({
+    role: 'user',
+    text: msg
+});
     if (!msg) return;
     input.value = '';
     const emptyState = document.getElementById('chatEmptyState');
     if (emptyState) emptyState.style.display = 'none';
     appendMessage(msg, 'user');
-    const typing = appendMessage('Mengetik...', 'bot', true);
+    const typing = appendMessage('⏳ Sedang mengetik...', 'bot', true);
     try {
         const res = await fetch('/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-            body: JSON.stringify({ message: msg })
-        });
-        const d = await res.json();
-        typing.remove();
-        appendMessage(d.reply, 'bot');
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+    },
+    body: JSON.stringify({
+        message: msg,
+        history: chatHistory
+    })
+});
+
+if (!res.ok) {
+    throw new Error('Server Error');
+}
+
+const d = await res.json();
+
+typing.remove();
+
+chatHistory.push({
+    role: 'model',
+    text: d.reply
+});
+
+appendMessage(d.reply, 'bot');
     } catch (err) {
         typing.remove();
         appendMessage('Maaf, chatbot sedang tidak tersedia.', 'bot');
@@ -488,14 +511,27 @@ async function sendChat() {
 }
 
 function appendMessage(text, role, isTyping = false) {
-    const msgs = document.getElementById('chatMessages');
-    const div  = document.createElement('div');
-    div.className = role === 'user' ? 'msg-user' : 'msg-bot';
-    if (isTyping) div.classList.add('msg-typing');
-    div.textContent = text;
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-    return div;
+
+const msgs = document.getElementById('chatMessages');
+
+const div = document.createElement('div');
+
+div.className =
+    role === 'user'
+        ? 'msg-user'
+        : 'msg-bot';
+
+if (isTyping) {
+    div.classList.add('msg-typing');
+}
+
+div.innerHTML = text.replace(/\n/g, '<br>');
+
+msgs.appendChild(div);
+
+msgs.scrollTop = msgs.scrollHeight;
+
+return div;
 }
 
 // Tampilkan toast kalau ada session success dari redirect

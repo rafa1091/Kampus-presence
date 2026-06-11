@@ -27,15 +27,26 @@
 </style>
 
 <nav class="kp-nav">
-    {{-- Logo --}}
-    <a href="{{ Auth::user()->role === 'dosen' ? route('dosen.dashboard') : route('mahasiswa.dashboard') }}" class="kp-logo">
-        <div class="kp-logo-icon">
-            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-        </div>
-        <span class="kp-logo-text">KAMPUS<span>/presence</span></span>
-    </a>
+{{-- Logo --}}
+<a href="{{ Auth::user()->role === 'dosen' ? route('dosen.dashboard') : route('mahasiswa.dashboard') }}"
+    class="kp-logo flex items-center gap-1">
+ 
+     <svg class="logo-svg" width="40" height="40" viewBox="0 0 40 40" fill="none"
+         xmlns="http://www.w3.org/2000/svg">
+         <circle cx="20" cy="20" r="18" fill="rgba(255,255,255,0.15)"
+             stroke="rgba(255,255,255,0.3)" stroke-width="1" />
+         <path d="M20 8 L32 12.5 L32 19.5 Q32 27 20 31 Q8 27 8 19.5 L8 12.5 Z"
+             fill="none" stroke="white" stroke-width="1.6" />
+         <circle cx="20" cy="17" r="4" fill="none" stroke="#e8c97a"
+             stroke-width="1.6" />
+         <path d="M12 28 Q12 23 20 23 Q28 23 28 28" fill="none"
+             stroke="#e8c97a" stroke-width="1.6" stroke-linecap="round" />
+     </svg>
+ 
+     <span class="kp-logo-text">
+         KAMPUS<span>/presence</span>
+     </span>
+ </a>
 
     {{-- Nav Links --}}
     <div class="kp-nav-links">
