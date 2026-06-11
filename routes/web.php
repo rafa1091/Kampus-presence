@@ -24,6 +24,13 @@ Route::get('/', function () {
 Route::middleware('guest')->group(function () {
     Route::get('/login',    [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login',   [AuthController::class, 'login']);
+    
+    // 1. TAMBAHKAN RUTE KHUSUS HALAMAN PILIH ROLE
+    Route::get('/select-role', function() {
+        return view('auth.select-role'); // Sesuaikan dengan nama file blade pilih role-mu
+    })->name('register.role');
+
+    // 2. Rute register yang aslinya tetap di bawahnya
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register',[AuthController::class, 'register']);
 });
@@ -33,12 +40,15 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // ── DOSEN ──
+   // ── DOSEN ──
     Route::prefix('dosen')->name('dosen.')->group(function () {
         Route::get('/dashboard',        [DosenController::class, 'dashboard'])->name('dashboard');
         Route::get('/jadwal',           [DosenController::class, 'jadwal'])->name('jadwal');
-        Route::post('/jadwal',          [DosenController::class, 'storeJadwal'])->name('jadwal.store');
-        Route::delete('/jadwal/{id}',   [DosenController::class, 'destroyJadwal'])->name('jadwal.destroy');
+        
+        // GANTI DI SINI: Sesuaikan namanya dengan yang dipanggil di file Blade
+        Route::post('/jadwal',          [DosenController::class, 'storeJadwal'])->name('storeJadwal');
+        Route::delete('/jadwal/{id}',   [DosenController::class, 'destroyJadwal'])->name('destroyJadwal');
+        
         Route::get('/bimbingan',        [DosenController::class, 'bimbingan'])->name('bimbingan');
         Route::put('/status',           [DosenController::class, 'updateStatus'])->name('status.update');
         Route::put('/profil',           [DosenController::class, 'updateProfil'])->name('profil.update');

@@ -17,6 +17,7 @@
     /* Alert */
     .jdw-alert { padding: 10px 14px; border-radius: 10px; font-size: 12px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
     .jdw-alert-success { background: #ECFDF5; color: #059669; border: 0.5px solid #A7F3D0; }
+    .jdw-alert-danger { background: #FEF2F2; color: #EF4444; border: 0.5px solid #FEE2E2; }
 
     /* Form card */
     .jdw-form-card { background: #fff; border-radius: 16px; padding: 22px; margin-bottom: 20px; border: 0.5px solid rgba(0,0,0,.07); box-shadow: 0 2px 10px rgba(30,42,74,.05); }
@@ -30,7 +31,7 @@
         width: 100%; height: 40px; border: 0.5px solid #E2E8F0; border-radius: 10px;
         padding: 0 12px; font-size: 13px; font-family: inherit;
         color: #1E2A4A; outline: none; transition: border-color .15s; background: #fff;
-        appearance: none;
+        appearance: none; -webkit-appearance: none;
     }
     .jdw-input:focus, .jdw-select:focus { border-color: #4F7EF8; }
     .jdw-select-wrap { position: relative; }
@@ -42,29 +43,29 @@
 
     /* Grid jadwal */
     .jdw-week-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
-    @media (max-width: 600px) { .jdw-week-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 800px) { .jdw-week-grid { grid-template-columns: 1fr; } }
 
     .jdw-day-col {}
-    .jdw-day-header { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #1E2A4A; margin-bottom: 8px; padding: 0 2px; }
+    .jdw-day-header { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #1E2A4A; margin-bottom: 8px; padding: 0 2px; border-bottom: 2px solid #E2E8F0; padding-bottom: 4px; }
 
     .jdw-slot { background: #fff; border-radius: 12px; padding: 12px; border: 0.5px solid rgba(0,0,0,.07); box-shadow: 0 1px 6px rgba(30,42,74,.04); margin-bottom: 8px; position: relative; overflow: hidden; }
-    .jdw-slot-accent { position: absolute; top: 0; left: 0; bottom: 0; width: 3px; border-radius: 12px 0 0 12px; }
+    .jdw-slot-accent { position: absolute; top: 0; left: 0; bottom: 0; width: 4px; border-radius: 12px 0 0 12px; }
     .accent-mengajar  { background: #F59E0B; }
     .accent-bimbingan { background: #4F7EF8; }
     .accent-rapat     { background: #10B981; }
     .accent-lainnya   { background: #94A3B8; }
 
-    .jdw-slot-inner { padding-left: 10px; }
+    .jdw-slot-inner { padding-left: 6px; }
     .jdw-slot-time  { font-size: 11px; font-weight: 700; color: #1E2A4A; }
     .jdw-slot-act   { font-size: 12px; font-weight: 600; color: #475569; margin-top: 2px; }
     .jdw-slot-mk    { font-size: 10px; color: #94A3B8; margin-top: 2px; }
 
-    .jdw-btn-hapus { display: flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #94A3B8; background: none; border: none; cursor: pointer; padding: 0; margin-top: 8px; font-family: inherit; transition: color .15s; }
+    .jdw-btn-hapus { display: flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #94A3B8; background: none; border: none; cursor: pointer; padding: 0; margin-top: 10px; font-family: inherit; transition: color .15s; width: 100%; }
     .jdw-btn-hapus:hover { color: #EF4444; }
     .jdw-btn-hapus svg { width: 11px; height: 11px; }
 
     .jdw-empty { background: #fff; border-radius: 12px; padding: 16px; text-align: center; border: 0.5px dashed #E2E8F0; }
-    .jdw-empty-text { font-size: 11px; color: #CBD5E1; font-weight: 500; }
+    .jdw-empty-text { font-size: 11px; color: #CBD5E1; font-weight: 500; text-transform: lowercase; }
 </style>
 
 {{-- HERO --}}
@@ -78,6 +79,7 @@
 {{-- MAIN --}}
 <div class="jdw-main">
 
+    {{-- Alert Success --}}
     @if(session('success'))
         <div class="jdw-alert jdw-alert-success">
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
@@ -85,11 +87,19 @@
         </div>
     @endif
 
+    {{-- Alert Validation Errors --}}
+    @if($errors->any())
+        <div class="jdw-alert jdw-alert-danger">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span>Ada kesalahan pengisian data. Silakan cek kembali form Anda.</span>
+        </div>
+    @endif
+
     {{-- Form Tambah --}}
     <div class="jdw-form-card">
         <div class="jdw-form-label-section">Tambah Jadwal Baru</div>
 
-        <form action="{{ route('dosen.jadwal.store') }}" method="POST">
+        <form action="{{ route('dosen.storeJadwal') }}" method="POST">
             @csrf
             <div class="jdw-form-grid">
 
@@ -97,7 +107,7 @@
                 <div>
                     <label class="jdw-field-label">Hari</label>
                     <div class="jdw-select-wrap">
-                        <select name="hari" class="jdw-select">
+                        <select name="hari" class="jdw-select" required>
                             @foreach(['Senin','Selasa','Rabu','Kamis','Jumat'] as $hari)
                                 <option value="{{ $hari }}" {{ old('hari') === $hari ? 'selected' : '' }}>{{ $hari }}</option>
                             @endforeach
@@ -109,24 +119,24 @@
                 {{-- Mulai --}}
                 <div>
                     <label class="jdw-field-label">Mulai</label>
-                    <input type="time" name="mulai" value="{{ old('mulai') }}" class="jdw-input">
+                    <input type="time" name="mulai" value="{{ old('mulai') }}" class="jdw-input" required>
                 </div>
 
                 {{-- Selesai --}}
                 <div>
                     <label class="jdw-field-label">Selesai</label>
-                    <input type="time" name="selesai" value="{{ old('selesai') }}" class="jdw-input">
+                    <input type="time" name="selesai" value="{{ old('selesai') }}" class="jdw-input" required>
                 </div>
 
                 {{-- Aktifitas --}}
                 <div>
                     <label class="jdw-field-label">Aktifitas</label>
                     <div class="jdw-select-wrap">
-                        <select name="aktifitas" class="jdw-select">
-                            <option value="Mengajar">Mengajar</option>
-                            <option value="Bimbingan">Bimbingan</option>
-                            <option value="Rapat">Rapat</option>
-                            <option value="Lainnya">Lainnya</option>
+                        <select name="aktifitas" class="jdw-select" required>
+                            <option value="mengajar" {{ old('aktifitas') === 'mengajar' ? 'selected' : '' }}>Mengajar</option>
+                            <option value="bimbingan" {{ old('aktifitas') === 'bimbingan' ? 'selected' : '' }}>Bimbingan</option>
+                            <option value="rapat" {{ old('aktifitas') === 'rapat' ? 'selected' : '' }}>Rapat</option>
+                            <option value="lainnya" {{ old('aktifitas') === 'lainnya' ? 'selected' : '' }}>Lainnya</option>
                         </select>
                         <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
                     </div>
@@ -157,7 +167,6 @@
             'lainnya'   => 'accent-lainnya',
         ];
 
-        // Support array atau collection dari DB
         $jadwalPerHari = [];
         foreach ($hariList as $h) {
             if (is_array($jadwal ?? null)) {
@@ -186,11 +195,12 @@
                 <div class="jdw-slot-accent {{ $accent }}"></div>
                 <div class="jdw-slot-inner">
                     <div class="jdw-slot-time">{{ substr($mulai,0,5) }} – {{ substr($selesai,0,5) }}</div>
-                    <div class="jdw-slot-act">{{ $act }}</div>
+                    <div class="jdw-slot-act">{{ ucfirst($act) }}</div>
                     @if($mk)
                         <div class="jdw-slot-mk">{{ $mk }}</div>
                     @endif
-                    <form action="{{ route('dosen.jadwal.destroy', $jid) }}" method="POST">
+                    
+                    <form action="{{ route('dosen.destroyJadwal', $jid) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" onclick="return confirm('Hapus jadwal ini?')" class="jdw-btn-hapus">
