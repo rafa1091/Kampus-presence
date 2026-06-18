@@ -1,3 +1,4 @@
+```html
 @extends('layouts.app')
 
 @section('title', 'Aktivitas Saya')
@@ -9,7 +10,6 @@
 
     .akt-hero { background: linear-gradient(135deg, #1E2A4A 0%, #2D3F6B 100%); padding: 2rem 2rem 3.5rem; }
     .akt-hero-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    .akt-hero-left {}
     .akt-hero-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: #8AAEFB; text-transform: uppercase; margin-bottom: 0.4rem; }
     .akt-hero-title { font-size: 26px; font-weight: 700; color: #fff; line-height: 1.3; }
 
@@ -34,9 +34,16 @@
     .akt-alert { padding: 10px 14px; border-radius: 10px; font-size: 12px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
     .akt-alert-success { background: #ECFDF5; color: #059669; border: 0.5px solid #A7F3D0; }
 
+    /* Form Card Styles */
+    .jdw-form-card { background: #fff; border-radius: 16px; padding: 24px; border: 0.5px solid rgba(0,0,0,.07); box-shadow: 0 4px 20px rgba(30,42,74,.05); margin-bottom: 24px; }
+    .jdw-form-label-section { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #1E2A4A; margin-bottom: 20px; }
+    .jdw-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 20px; }
+    .jdw-btn-add { background: #1E2A4A; color: #fff; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background .15s; }
+    .jdw-btn-add:hover { background: #4F7EF8; }
+    .jdw-btn-add svg { width: 14 height: 14; }
 
     /* Stat cards */
-    .akt-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+    .akt-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; margin-top: 24px; }
     @media (max-width: 600px) { .akt-stats { grid-template-columns: 1fr; } }
     .akt-stat { background: #fff; border-radius: 16px; padding: 20px; border: 0.5px solid rgba(0,0,0,.07); box-shadow: 0 2px 10px rgba(30,42,74,.05); }
     .akt-stat-num   { font-size: 32px; font-weight: 800; color: #1E2A4A; line-height: 1; }
@@ -59,10 +66,10 @@
     .jdw-input:focus, .jdw-select:focus { border-color: #4F7EF8; }
     .jdw-select-wrap { position: relative; }
     .jdw-select-wrap svg { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; color: #94A3B8; pointer-events: none; }
+    
     /* Bimbingan hari ini */
     .akt-today-empty { background: #fff; border-radius: 12px; padding: 24px; text-align: center; border: 0.5px dashed #E2E8F0; }
     .akt-today-empty-text { font-size: 12px; color: #CBD5E1; font-weight: 500; }
-
 
     .akt-today-list { display: flex; flex-direction: column; gap: 10px; }
     .akt-today-card { background: #fff; border-radius: 12px; padding: 14px 18px; border: 0.5px solid rgba(0,0,0,.07); box-shadow: 0 1px 6px rgba(30,42,74,.04); display: flex; align-items: center; gap: 16px; }
@@ -73,7 +80,7 @@
     .akt-today-badge { flex-shrink: 0; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px; background: #ECFDF5; color: #059669; text-transform: uppercase; }
 
     /* Grid jadwal */
-    .jdw-week-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+    .jdw-week-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px; }
     @media (max-width: 800px) { .jdw-week-grid { grid-template-columns: 1fr; } }
 
     .jdw-day-col {}
@@ -97,6 +104,7 @@
 
     .jdw-empty { background: #fff; border-radius: 12px; padding: 16px; text-align: center; border: 0.5px dashed #E2E8F0; }
     .jdw-empty-text { font-size: 11px; color: #CBD5E1; font-weight: 500; text-transform: lowercase; }
+    
     /* Antrian pending */
     .akt-pending-list { display: flex; flex-direction: column; gap: 10px; }
     .akt-pending-card { background: #fff; border-radius: 12px; padding: 14px 18px; border: 0.5px solid rgba(0,0,0,.07); box-shadow: 0 1px 6px rgba(30,42,74,.04); display: flex; align-items: center; gap: 16px; }
@@ -107,7 +115,6 @@
     .akt-pending-action { flex-shrink: 0; }
     .akt-btn-balas { font-size: 10px; font-weight: 700; padding: 6px 14px; border-radius: 8px; background: #1E2A4A; color: #fff; border: none; cursor: pointer; font-family: inherit; text-decoration: none; display: inline-block; transition: background .15s; }
     .akt-btn-balas:hover { background: #4F7EF8; }
-
 </style>
 
 {{-- HERO --}}
@@ -133,6 +140,7 @@
                 @foreach($statusList as $val => $label)
                     <form method="POST" action="{{ route('dosen.status.update') }}" style="display:inline;">
                         @csrf
+                        @html
                         @method('PUT')
                         <input type="hidden" name="status" value="{{ $val }}">
                         <button type="submit" class="akt-status-btn {{ $dosenStatus === $val ? 'active-'.$val : '' }}">
@@ -171,7 +179,6 @@
         <form action="{{ route('dosen.storeJadwal') }}" method="POST">
             @csrf
             <div class="jdw-form-grid">
-
                 {{-- Hari --}}
                 <div>
                     <label class="jdw-field-label">Hari</label>
@@ -216,7 +223,6 @@
                     <label class="jdw-field-label">Matakuliah <span style="font-weight:400;text-transform:none;letter-spacing:0">(Opsional)</span></label>
                     <input type="text" name="matakuliah" value="{{ old('matakuliah') }}" placeholder="Contoh: Algoritma" class="jdw-input">
                 </div>
-
             </div>
 
             <button type="submit" class="jdw-btn-add">
@@ -252,38 +258,41 @@
             <div class="jdw-day-header">{{ $hari }}</div>
 
             @forelse($jadwalPerHari[$hari] as $j)
-            @php
-                $act    = is_array($j) ? ($j['aktifitas'] ?? '') : ($j->aktifitas ?? '');
-                $mulai  = is_array($j) ? ($j['mulai'] ?? '') : ($j->mulai ?? '');
-                $selesai= is_array($j) ? ($j['selesai'] ?? '') : ($j->selesai ?? '');
-                $mk     = is_array($j) ? ($j['matakuliah'] ?? '') : ($j->matakuliah ?? '');
-                $jid    = is_array($j) ? ($j['id'] ?? 0) : ($j->id ?? 0);
-                $accent = $accentMap[strtolower($act)] ?? 'accent-lainnya';
-            @endphp
-            <div class="jdw-slot">
-                <div class="jdw-slot-accent {{ $accent }}"></div>
-                <div class="jdw-slot-inner">
-                    <div class="jdw-slot-time">{{ substr($mulai,0,5) }} – {{ substr($selesai,0,5) }}</div>
-                    <div class="jdw-slot-act">{{ ucfirst($act) }}</div>
-                    @if($mk)
-                        <div class="jdw-slot-mk">{{ $mk }}</div>
-                    @endif
-                    
-                    <form action="{{ route('dosen.destroyJadwal', $jid) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" onclick="return confirm('Hapus jadwal ini?')" class="jdw-btn-hapus">
-                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-                            Hapus
-                        </button>
-                    </form>
+                @php
+                    $act     = is_array($j) ? ($j['aktifitas'] ?? '') : ($j->aktifitas ?? '');
+                    $mulai   = is_array($j) ? ($j['mulai'] ?? '') : ($j->mulai ?? '');
+                    $selesai = is_array($j) ? ($j['selesai'] ?? '') : ($j->selesai ?? '');
+                    $mk      = is_array($j) ? ($j['matakuliah'] ?? '') : ($j->matakuliah ?? '');
+                    $jid     = is_array($j) ? ($j['id'] ?? 0) : ($j->id ?? 0);
+                    $accent  = $accentMap[strtolower($act)] ?? 'accent-lainnya';
+                @endphp
+                <div class="jdw-slot">
+                    <div class="jdw-slot-accent {{ $accent }}"></div>
+                    <div class="jdw-slot-inner">
+                        <div class="jdw-slot-time">{{ substr($mulai,0,5) }} – {{ substr($selesai,0,5) }}</div>
+                        <div class="jdw-slot-act">{{ ucfirst($act) }}</div>
+                        @if($mk)
+                            <div class="jdw-slot-mk">{{ $mk }}</div>
+                        @endif
+                        
+                        <form action="{{ route('dosen.destroyJadwal', $jid) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" onclick="return confirm('Hapus jadwal ini?')" class="jdw-btn-hapus">
+                                <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                                Hapus
+                            </button>
+                        </form>
+                    </div>
                 </div>
-            </div>
             @empty
-            <div class="jdw-empty">
-                <div class="jdw-empty-text">kosong</div>
-            </div>
+                <div class="jdw-empty">
+                    <div class="jdw-empty-text">kosong</div>
+                </div>
             @endforelse
+        </div>
+        @endforeach
+    </div>
 
     {{-- Stat Cards --}}
     <div class="akt-stats">
@@ -298,7 +307,6 @@
         <div class="akt-stat">
             <div class="akt-stat-num">{{ $totalRejected }}</div>
             <div class="akt-stat-label"><span class="akt-stat-dot dot-rejected"></span>Ditolak</div>
-
         </div>
     </div>
 
