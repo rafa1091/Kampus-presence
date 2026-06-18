@@ -39,7 +39,7 @@
     .kp-card-accent { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 16px 16px 0 0; }
     .accent-green { background: #10B981; }
     .accent-amber { background: #F59E0B; }
-    .accent-red   { background: #EF4444; }
+    .accent-red    { background: #EF4444; }
     .accent-blue  { background: #4F7EF8; }
 
     .kp-card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
@@ -54,12 +54,11 @@
     .badge-green .kp-badge-dot { background: #10B981; }
     .badge-amber { background: #FFFBEB; color: #B45309; }
     .badge-amber .kp-badge-dot { background: #F59E0B; }
-    .badge-red   { background: #FEF2F2; color: #B91C1C; }
-    .badge-red .kp-badge-dot   { background: #EF4444; }
+    .badge-red    { background: #FEF2F2; color: #B91C1C; }
+    .badge-red .kp-badge-dot    { background: #EF4444; }
     .badge-blue  { background: #EEF3FE; color: #2B5BD4; }
     .badge-blue .kp-badge-dot  { background: #4F7EF8; }
 
-    /* Sudah direquest badge */
     .kp-requested-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 6px; background: #F0FDF4; color: #15803D; border: 0.5px solid #BBF7D0; margin-bottom: 8px; margin-left: 6px; }
     .kp-requested-badge svg { width: 10px; height: 10px; }
 
@@ -84,7 +83,7 @@
     .kp-modal-close svg { width: 14px; height: 14px; }
     .kp-modal-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #8AAEFB; margin-bottom: 4px; }
     .kp-modal-title { font-size: 22px; font-weight: 800; color: #1E2A4A; margin-bottom: 4px; line-height: 1.2; }
-    .kp-modal-sub   { font-size: 12px; color: #64748B; margin-bottom: 1.5rem; }
+    .kp-modal-sub    { font-size: 12px; color: #64748B; margin-bottom: 1.5rem; }
     .kp-modal-sub span { font-weight: 700; color: #1E2A4A; }
     .kp-field-row { display: flex; gap: 12px; margin-bottom: 12px; }
     .kp-field { flex: 1; }
@@ -159,6 +158,37 @@
 
 {{-- MAIN --}}
 <div class="kp-main">
+
+    {{-- CARD DETAIL DOSEN PEMBIMBING MAHASISWA --}}
+    <div class="card-status-dosen" style="background: #fff; border-radius: 16px; padding: 20px; margin-bottom: 1.5rem; border: 0.5px solid rgba(0,0,0,.07); box-shadow: 0 2px 12px rgba(30,42,74,.05);">
+        <h4 style="font-size: 14px; font-weight: 700; color: #1E2A4A; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;">
+            📌 Status Dosen Pembimbing Kamu
+        </h4>
+        
+        @if($dosenPembimbing)
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: #64748B;">
+                <p><strong>Nama Dosen:</strong> <span style="color: #1E2A4A; font-weight: 600;">{{ $dosenPembimbing->nama }}</span></p>
+                <p style="display: flex; align-items: center; gap: 4px;"><strong>Posisi Saat Ini:</strong> 
+                    <span class="kp-badge {{ $dosenPembimbing->status === 'di_ruangan' ? 'badge-green' : ($dosenPembimbing->status === 'mengajar' ? 'badge-amber' : ($dosenPembimbing->status === 'bimbingan' ? 'badge-blue' : 'badge-red')) }}" style="margin-bottom: 0; margin-left: 4px;">
+                        <div class="kp-badge-dot"></div>
+                        {{ ucwords(str_replace('_', ' ', $dosenPembimbing->status)) }}
+                    </span>
+                </p>
+                <p><strong>Ruangan:</strong> <span style="color: #1E2A4A; font-weight: 500;">{{ $dosenPembimbing->ruangan ?? 'Belum diatur' }}</span></p>
+                
+                <div style="margin-top: 4px;">
+                    <strong style="display: block; margin-bottom: 4px;">Catatan Dosen:</strong>
+                    <div style="font-style: italic; background: #F8FAFC; border-radius: 8px; padding: 10px 12px; border-left: 3px solid #4F7EF8; color: #475569; font-size: 12px; line-height: 1.5;">
+                        "{{ $dosenPembimbing->catatan ?? 'Tidak ada catatan terbaru dari dosen.' }}"
+                    </div>
+                </div>
+            </div>
+        @else
+            <p style="font-size: 12px; color: #94A3B8; font-style: italic;">Kamu belum memiliki atau belum dikaitkan dengan Dosen Pembimbing.</p>
+        @endif
+    </div>
+
+    {{-- FILTER DIRECTORY BAR --}}
     <div class="kp-filter-bar">
         <div class="kp-search">
             <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24">
@@ -268,18 +298,17 @@
 // ── DATA DOSEN dari Laravel ──
 const rawData = @json($dosens ?? []);
 
-// Normalisasi data — sesuaikan nama kolom dari DB
 const dosenData = rawData.map(d => ({
     id:      d.id,
     nama:    d.nama,
     status:  d.status,
-    ruangan: d.ruangan ? d.ruangan.nama_ruangan : null,
+    ruangan: d.ruangan, 
     no_hp:   d.no_hp,
     foto:    d.foto,
     catatan: d.catatan,
 }));
 
-// Ambil daftar dosen_id yang sudah pernah di-request (pending) dari session/server
+// Ambil daftar dosen_id yang sudah pernah di-request (pending)
 const requestedDosenIds = @json(
     \App\Models\Bimbingan::where('user_id', Auth::id())
         ->where('status', 'pending')
@@ -391,7 +420,6 @@ function openModal(dosenId) {
     ['inputTanggal','inputJam','inputTopik','inputCatatan'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('modalError').style.display = 'none';
 
-    // Tampilkan warning kalau sudah pernah request pending
     const alreadyEl = document.getElementById('modalAlreadyRequested');
     alreadyEl.style.display = requestedDosenIds.includes(currentDosen.id) ? 'block' : 'none';
 
@@ -423,7 +451,6 @@ function submitRequest() {
     }
     errEl.style.display = 'none';
 
-    // Submit ke backend Laravel
     const form = document.createElement('form');
     form.method = 'POST';
     form.action = '{{ route("mahasiswa.bimbingan.store") }}';
@@ -455,6 +482,7 @@ function showToast(msg) {
     t.style.display = 'flex';
     setTimeout(() => t.style.display = 'none', 3000);
 }
+
 let chatHistory = [];
 
 function toggleChat() {
@@ -467,43 +495,37 @@ function toggleChat() {
 async function sendChat() {
     const input = document.getElementById('chatInput');
     const msg   = input.value.trim();
-    chatHistory.push({
-    role: 'user',
-    text: msg
-});
     if (!msg) return;
+    
+    chatHistory.push({ role: 'user', text: msg });
     input.value = '';
+    
     const emptyState = document.getElementById('chatEmptyState');
     if (emptyState) emptyState.style.display = 'none';
+    
     appendMessage(msg, 'user');
     const typing = appendMessage('⏳ Sedang mengetik...', 'bot', true);
+    
     try {
         const res = await fetch('/chat', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-    },
-    body: JSON.stringify({
-        message: msg,
-        history: chatHistory
-    })
-});
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                message: msg,
+                history: chatHistory
+            })
+        });
 
-if (!res.ok) {
-    throw new Error('Server Error');
-}
+        if (!res.ok) throw new Error('Server Error');
 
-const d = await res.json();
+        const d = await res.json();
+        typing.remove();
 
-typing.remove();
-
-chatHistory.push({
-    role: 'model',
-    text: d.reply
-});
-
-appendMessage(d.reply, 'bot');
+        chatHistory.push({ role: 'model', text: d.reply });
+        appendMessage(d.reply, 'bot');
     } catch (err) {
         typing.remove();
         appendMessage('Maaf, chatbot sedang tidak tersedia.', 'bot');
@@ -511,30 +533,18 @@ appendMessage(d.reply, 'bot');
 }
 
 function appendMessage(text, role, isTyping = false) {
+    const msgs = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = role === 'user' ? 'msg-user' : 'msg-bot';
 
-const msgs = document.getElementById('chatMessages');
+    if (isTyping) div.classList.add('msg-typing');
 
-const div = document.createElement('div');
-
-div.className =
-    role === 'user'
-        ? 'msg-user'
-        : 'msg-bot';
-
-if (isTyping) {
-    div.classList.add('msg-typing');
+    div.innerHTML = text.replace(/\n/g, '<br>');
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    return div;
 }
 
-div.innerHTML = text.replace(/\n/g, '<br>');
-
-msgs.appendChild(div);
-
-msgs.scrollTop = msgs.scrollHeight;
-
-return div;
-}
-
-// Tampilkan toast kalau ada session success dari redirect
 @if(session('success'))
     showToast('{{ session("success") }}');
 @endif
