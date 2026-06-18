@@ -461,3 +461,43 @@
         </div>
     </div>
 </div>
+
+<script>
+// ── 1. FUNGSI MENGHILANGKAN LOADING SCREEN (PENYELAMAT!) ──
+window.addEventListener('DOMContentLoaded', () => {
+    const loaderBar = document.getElementById('lsBarFill');
+    const loadingScreen = document.getElementById('loading-screen');
+    const msg = document.getElementById('lsMsg');
+    
+    // Simulasi bar jalan cepat sampai 100%
+    if (loaderBar) loaderBar.style.width = '100%';
+    if (msg) msg.innerText = 'Sistem Siap!';
+
+    // Tunggu animasi bar selesai, lalu hilangkan tirai hitam
+    setTimeout(() => {
+        if (loadingScreen) {
+            loadingScreen.classList.add('hide');
+        }
+    }, 600); // jeda 0.6 detik biar transisinya halus
+});
+
+// ── 2. FUNGSI TOGGLE ROLE JALANAN KAMU ──
+function toggleForm() {
+    let role = document.getElementById('role').value;
+    let fields = document.getElementById('dynamic-fields');
+    let dosen = document.getElementById('dosen-only');
+    let label = document.getElementById('id-label');
+
+    if (fields) fields.style.display = role ? 'block' : 'none';
+
+    if (role === 'dosen') {
+        if (dosen) dosen.style.display = 'block';
+        if (label) label.innerText = "NIDN";
+    } else {
+        if (dosen) dosen.style.display = 'none';
+        if (label) label.innerText = "NIM";
+    }
+}
+</script>
+</body>
+</html>

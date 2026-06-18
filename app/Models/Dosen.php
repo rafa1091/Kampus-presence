@@ -2,19 +2,35 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Dosen extends Model
 {
-    protected $table = 'dosen';
+    use HasFactory;
 
+    // Menentukan nama tabel secara eksplisit sesuai database kamu
+    protected $table = 'dosen'; 
+
+    // Daftar kolom yang diizinkan untuk diisi (Mass Assignment)
     protected $fillable = [
-        'user_id', 'nama', 'nidn', 'email', 'status',
-        'no_hp', 'foto', 'catatan', 'ruangan_id',
+        'user_id',
+        'nip',
+        'nama',
+        'ruangan',
+        'no_hp',
+        'status',
+        'catatan',
+        'foto'
     ];
 
-public function ruangan()
+    /**
+     * 🌟 RELASI KE MODEL USER
+     * Menghubungkan tabel dosen kembali ke tabel users 
+     * melalui foreign key 'user_id'.
+     */
+    public function user()
     {
-        return $this->belongsTo(Ruangan::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
